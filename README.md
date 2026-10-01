@@ -57,7 +57,7 @@ A frequência de consulta não determina a frequência de publicação do TSE. O
 
 ## Tecnologias
 
-React, TypeScript, Tailwind CSS e componentes Radix UI. A aplicação usa **Vinext/Vite**, com estrutura de rotas compatível com o App Router, e o ambiente **Cloudflare Workers** por meio da hospedagem Sites.
+React, TypeScript, Tailwind CSS e componentes Radix UI. A aplicação oferece dois caminhos de execução: **Next.js para Vercel** e **Vinext/Vite para Sites/Cloudflare Workers**. Ambos usam o mesmo painel e a mesma integração com o TSE.
 
 A consulta ao TSE acontece na rota de servidor `app/api/tse/route.ts`. O painel eleitoral não depende de banco de dados, armazenamento de usuários ou chave de API do TSE.
 
@@ -85,6 +85,9 @@ Abra o endereço informado pelo servidor no terminal.
 | `npm run dev` | Iniciar o ambiente de desenvolvimento |
 | `npm run build` | Gerar a aplicação para o ambiente atual de hospedagem |
 | `npm run start` | Servir o build localmente com Wrangler; executar após o build |
+| `npm run dev:vercel` | Iniciar o desenvolvimento com Next.js |
+| `npm run build:vercel` | Gerar o build Next.js usado pela Vercel |
+| `npm run start:vercel` | Servir localmente o build Next.js |
 | `npm run lint` | Executar a análise estática configurada no projeto |
 
 ## Organização do projeto
@@ -115,9 +118,22 @@ A versão atual está publicada em **Sites/Cloudflare Workers**. O envio do cód
 
 ### Vercel
 
-**A configuração atual ainda não foi adaptada ou validada para a Vercel.** O projeto contém integrações de build e execução específicas de Sites/Cloudflare. A presença de Next.js nas dependências não garante que a importação automática como um projeto Next.js funcione.
+O arquivo `vercel.json` configura o framework Next.js, a instalação com `npm ci`, o build com `npm run build:vercel` e a saída `.next`. Os comandos originais de Sites/Cloudflare permanecem disponíveis.
 
-Antes de publicar na Vercel, é necessário adaptar o build e a execução do servidor, verificar a rota de consulta ao TSE e validar o funcionamento dos filtros e indicadores no novo ambiente. Nenhuma publicação na Vercel foi configurada neste repositório até o momento.
+Ao importar este repositório na Vercel, configure:
+
+| Campo | Valor |
+| --- | --- |
+| Production Branch | `main` |
+| Root Directory | `./` — raiz do repositório, onde está o `package.json` |
+| Framework Preset | Next.js |
+| Build Command | `npm run build:vercel` |
+| Install Command | `npm ci` |
+| Output Directory | `.next` |
+
+Não selecione `app/` como diretório raiz. A integração eleitoral não exige chave de API ou variáveis de ambiente. O build usa `tsconfig.vercel.json` para separar a tipagem da aplicação dos utilitários exclusivos de Cloudflare, sem removê-los.
+
+A importação, o domínio e a publicação efetiva devem ser configurados na conta Vercel. O site atual do Sites permanece disponível; a publicação na Vercel é independente.
 
 ### Domínio próprio
 
@@ -128,3 +144,4 @@ O endereço desejado é `nabocadopovo-eleicoes.site`. Ele ainda precisa ser regi
 Preserve as validações de origem oficial, eleição, cargo e turno ao alterar a integração. Respeite os limites de acesso do TSE e evite consultas repetidas a arquivos inexistentes. Verifique os filtros nacionais, estaduais e municipais, a interpretação dos percentuais e a leitura em telas pequenas antes de publicar alterações.
 
 Arquivos de ambiente, credenciais e artefatos locais de execução devem permanecer fora do repositório.
+

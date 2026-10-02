@@ -17,7 +17,7 @@ export type ConnectorFailureStatus =
   | "tool_error"
   | "upstream_error"
   | "internal_error"
-  // Starter-only: no runtime capability or active local preview session.
+  // No runtime capability or active local preview session.
   | "binding_unavailable";
 
 export type ConnectorContent = {

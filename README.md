@@ -2,7 +2,7 @@
 
 Painel público de acompanhamento das eleições brasileiras, desenvolvido para a cobertura do programa **Na Boca do Povo**. Reúne resultados e indicadores eleitorais oficiais do Tribunal Superior Eleitoral (TSE), com filtros por localidade, cargo e turno e uma apresentação adaptada a celulares.
 
-**[Acessar o painel](https://na-boca-do-povo-eleicoes.chicodias15.chatgpt.site/)** · **[Resultados oficiais do TSE](https://resultados.tse.jus.br/)**
+**[Acessar o painel](https://nabocadopovo-eleicoes.vercel.app/)** · **[Resultados oficiais do TSE](https://resultados.tse.jus.br/)**
 
 O painel é independente do TSE e pode ser consultado sem cadastro, login ou senha.
 
@@ -109,7 +109,6 @@ lib/
 public/
   logo.png                  Identidade visual do programa
 build/ e scripts/           Integração de execução e hospedagem
-.openai/hosting.json         Identificação da publicação Sites
 ```
 
 ## Hospedagem e domínio

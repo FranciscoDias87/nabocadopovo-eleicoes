@@ -66,7 +66,7 @@ export function connectorResponse(result: unknown): Response {
   );
 }
 
-/** Presentation only. The caller supplies the starter's server-generated SIWC URL. */
+/** Presentation only. The caller supplies the server-generated sign-in URL. */
 export function connectorErrorRecovery(
   error: { status: string; message: string },
   connectorName: string,

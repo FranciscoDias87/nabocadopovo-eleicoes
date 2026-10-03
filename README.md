@@ -12,6 +12,7 @@ O painel é independente do TSE e pode ser consultado sem cadastro, login ou sen
 - Seleção de primeiro e segundo turno, conforme disponibilidade dos arquivos oficiais.
 - Mapa geográfico interativo das 27 unidades da federação, com limites do IBGE.
 - Busca de candidatos por nome, número ou partido.
+- Fotos oficiais dos candidatos, associadas ao identificador de candidatura do TSE, com carregamento sob demanda e ícone quando indisponíveis.
 - Votos, percentuais e situação dos candidatos conforme o TSE.
 - Seções totalizadas, percentual de totalização e seções pendentes.
 - Eleitores aptos, eleitorado das seções totalizadas e pendentes.
@@ -48,6 +49,12 @@ A frequência de consulta não determina a frequência de publicação do TSE. O
 - Votos anulados e anulados sub judice são apresentados separadamente dos nulos. Os votos válidos de deputados incluem votos nominais e de legenda.
 - **“—”** indica informação ausente ou percentual sem base de cálculo. Zero representa um valor retornado no arquivo oficial.
 - Resultados parciais podem mudar. A classificação exibida segue a informação oficial; o painel não faz projeções de vencedores.
+
+### Fotos dos candidatos
+
+As fotos de 2026 são importadas do Portal de Dados Abertos do TSE e servidas em `public/candidates/2026/`. Os nomes dos arquivos correspondem ao identificador `sqcand` dos resultados. `lib/candidate-photo-ids.json` registra as imagens disponíveis; nenhuma associação é feita por nome ou número de urna. As imagens conservam os arquivos JPEG oficiais e usam carregamento preguiçoso no navegador. Novas candidaturas sem foto importada recebem um ícone neutro até a próxima importação.
+
+Fonte: [Candidatos 2026 — TSE](https://dadosabertos.tse.jus.br/dataset/candidatos-2026), licença Creative Commons Atribuição conforme o catálogo. Importação realizada em 03/10/2026. As fotos não são atualizadas pelo ciclo de consulta de votos de 30 segundos. Para reimportar, execute `pwsh -File scripts/import-candidate-photos.ps1` na raiz do projeto e valide os builds antes de publicar. As URLs de origem são registradas em `lib/candidate-photo-sources.json`.
 
 ### Fontes
 

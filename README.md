@@ -151,3 +151,14 @@ Preserve as validações de origem oficial, eleição, cargo e turno ao alterar 
 
 Arquivos de ambiente, credenciais e artefatos locais de execução devem permanecer fora do repositório.
 
+## Análise e confiabilidade
+
+A busca aceita nomes com ou sem acento. Candidatos são exibidos em lotes de 40; o CSV completo inclui todos os candidatos e os horários e a fonte oficial. Os filtros ficam no endereço da página para compartilhamento. Os indicadores completos são expansíveis.
+
+Falhas temporárias preservam o último resultado da mesma consulta, com aviso de desatualização. Informações numéricas ausentes aparecem como indisponíveis, sem serem convertidas em zero. O histórico local registra até 20 atualizações por consulta e 200 registros neste navegador enquanto o painel está aberto; não substitui um histórico central.
+
+O navegador consulta a cada 30 segundos enquanto a página está visível. Na Vercel, respostas públicas podem ficar em cache por 15 segundos e servir conteúdo anterior durante revalidação por até 30 segundos. Confira os horários do TSE.
+
+Execute npm test e os dois builds antes de publicar. O GitHub Actions repete essas verificações e audita as dependências de produção. Next.js foi atualizado para 16.3.8, preservando Vite/Vinext.
+
+O endpoint /api/health verifica a disponibilidade da aplicação, sem afirmar que o TSE está disponível. Falhas de consulta geram o evento tse_fetch_failed nos logs do servidor. O modo transmissão não faz parte desta atualização.

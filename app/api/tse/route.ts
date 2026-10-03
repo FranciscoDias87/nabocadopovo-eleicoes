@@ -1,3 +1,4 @@
+import {readNumber} from '@/lib/election-core.mjs';
 import candidatePhotoIds from '@/lib/candidate-photo-ids.json';
 import {electionIndicators} from '@/lib/election-indicators';
 import {states} from '@/lib/geography';
@@ -19,16 +20,16 @@ async function file(url:string,ttl=25000):Promise<Entry>{
  try{const headers:Record<string,string>={Accept:'application/json'};if(old?.etag)headers['If-None-Match']=old.etag;else if(old?.modified)headers['If-Modified-Since']=old.modified;
  const response=await fetch(url,{headers,signal:AbortSignal.timeout(15000)});
  if(response.status===304&&old?.data)entry={...old,until:Date.now()+ttl,stale:false,error:undefined};
- else if(response.status===404)entry=old?.data?{...old,until:Date.now()+600000,stale:true,error:'waiting'}:{data:null,until:Date.now()+600000,error:'waiting'};
+ else if(response.status===404)entry=old?.data?{...old,until:Date.now()+60000,stale:true,error:'waiting'}:{data:null,until:Date.now()+60000,error:'waiting'};
  else if(!response.ok)throw new Error('upstream');
  else{const data=await response.json() as Json;if(!data||data.f!=='o')throw new Error('non_official');entry={data,until:Date.now()+ttl,etag:response.headers.get('etag')??undefined,modified:response.headers.get('last-modified')??undefined};}
- }catch{entry={data:old?.data??null,until:Date.now()+60000,error:'error',stale:!!old?.data,etag:old?.etag,modified:old?.modified};}
+ }catch{console.warn(JSON.stringify({event:'tse_fetch_failed',file:new URL(url).pathname,hasPrevious:!!old?.data}));entry={data:old?.data??null,until:Date.now()+60000,error:'error',stale:!!old?.data,etag:old?.etag,modified:old?.modified};}
  if(memory.size>128)memory.delete(memory.keys().next().value!);memory.set(url,entry);
  if(edge&&cacheKey)try{await edge.put(cacheKey,Response.json(entry,{headers:{'Cache-Control':`public, max-age=${Math.max(1,Math.floor((entry.until-Date.now())/1000))}`}}));}catch{}
  return entry;})();pending.set(url,task);try{return await task;}finally{pending.delete(url);}
 }
-const number=(v:unknown)=>{const n=Number(String(v??'0').replace(',','.'));return Number.isFinite(n)?n:0;};
-const reply=(data:Json)=>Response.json(data,{headers:{'Cache-Control':'public, max-age=10','X-Content-Type-Options':'nosniff'}});
+const number=readNumber;
+const reply=(data:Json)=>Response.json(data,{headers:{'Cache-Control':'public, max-age=0, s-maxage=15, stale-while-revalidate=30','X-Content-Type-Options':'nosniff'}});
 const unavailable=(e:Entry)=>reply({status:e.error==='waiting'?'waiting':'error',message:e.error==='waiting'?'Aguardando a disponibilização do arquivo oficial pelo TSE.':'Não foi possível consultar o TSE. Tentaremos novamente automaticamente.'});
 export async function GET(request:Request){
  const p=new URL(request.url).searchParams,kind=p.get('kind')??'result',uf=p.get('uf')??'br',office=p.get('office')??'1',town=p.get('town')??'all',turn=p.get('turn')??'1';
@@ -60,7 +61,7 @@ export async function GET(request:Request){
  const url=`${root}/dados/${uf}/${uf}${town==='all'?'':town}-c${office.padStart(4,'0')}-e${pad}-u.json`,e=await file(url);if(!e.data)return unavailable(e);const d=e.data;
  if(String(d.ele)!==id||String(d.t)!==turn||!(d.carg??[]).some((c:Json)=>String(c.cd)===office))return reply({status:'error',message:'Arquivo de outra eleição ou cargo rejeitado.'});
  if(d.dv!=='s')return reply({status:'waiting',message:'O TSE ainda não liberou a divulgação desta abrangência.'});
- const candidates=(d.carg??[]).filter((c:Json)=>String(c.cd)===office).flatMap((c:Json)=>(c.agr??[]).flatMap((a:Json)=>(a.par??[]).flatMap((par:Json)=>(par.cand??[]).map((c:Json)=>({id:String(c.sqcand??''),photo:candidatePhoto(c.sqcand),name:String(c.nmu??c.nm),number:String(c.n),party:String(par.sg),votes:number(c.vap),percent:number(c.pvap),situation:String(c.st??'')}))))).sort((a:Json,b:Json)=>b.votes-a.votes||a.name.localeCompare(b.name,'pt-BR'));
+ const candidates=(d.carg??[]).filter((c:Json)=>String(c.cd)===office).flatMap((c:Json)=>(c.agr??[]).flatMap((a:Json)=>(a.par??[]).flatMap((par:Json)=>(par.cand??[]).map((c:Json)=>({id:String(c.sqcand??''),photo:candidatePhoto(c.sqcand),name:String(c.nmu??c.nm),number:String(c.n),party:String(par.sg),votes:number(c.vap),percent:number(c.pvap),situation:String(c.st??'')}))))).sort((a:Json,b:Json)=>(b.votes??-1)-(a.votes??-1)||a.name.localeCompare(b.name,'pt-BR'));
  return reply({status:'ok',message:d.and==='f'?'Totalização finalizada':d.and==='p'?'Apuração em andamento':'Apuração não iniciada',stale:!!e.stale,updated:d.dt && d.ht ? `${d.dt} ${d.ht}` : undefined,generated:`${d.dg} ${d.hg}`,source:url,progress:number(d.s?.pst),counted:number(d.s?.st),total:number(d.s?.ts),indicators:electionIndicators(d),valid:number(d.v?.vv),blank:number(d.v?.vb),nullVotes:number(d.v?.tvn),candidates});
 }
 

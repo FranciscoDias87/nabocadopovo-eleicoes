@@ -1,3 +1,4 @@
+import {Audience} from '@/components/audience';
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">{children}<Audience enabled={process.env.VERCEL === "1"}/></body>
     </html>
   );
 }

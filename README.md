@@ -163,3 +163,14 @@ Execute npm test e os dois builds antes de publicar. O GitHub Actions repete ess
 
 O endpoint /api/health verifica a disponibilidade da aplicação, sem afirmar que o TSE está disponível. Falhas de consulta geram o evento tse_fetch_failed nos logs do servidor. O modo transmissão não faz parte desta atualização.
 A lista prioriza candidatos com situação oficial Eleito, Eleito por QP ou Eleito por média (incluindo grafias femininas). Dentro dos grupos, mantém votos em ordem decrescente e desempate por nome. Suplentes, não eleitos e candidatos ao segundo turno não são classificados como eleitos. A ordem é recalculada em cada atualização; o painel não estima eleição a partir da quantidade de votos.
+
+
+## Estatísticas privadas de audiência
+
+O Vercel Web Analytics está integrado ao layout e ligado somente em builds Vercel. Os visitantes continuam acessando sem cadastro. O proprietário acompanha visitantes, visualizações, origem dos acessos e o indicador online no painel da Vercel, protegido pelo login da sua conta.
+
+Abra https://vercel.com/francisco-diass-projects/nabocadopovo-eleicoes/analytics e selecione Production. Se a coleta estiver desativada, clique em Enable e faça novo deploy. A coleta começa após a ativação e publicação, sem recuperar acessos antigos. Bloqueadores e as regras de identificação da Vercel podem afetar os números; visitantes estimados não equivalem a pessoas únicas com cadastro.
+
+O componente React do pacote @vercel/analytics preserva a compatibilidade com Next.js e Vite/Vinext. A integração é desligada em builds fora da Vercel e não cria rotas de autenticação, banco de presença ou consultas adicionais à API eleitoral. Não há registro do conteúdo de CSV nem das atualizações do histórico local.
+
+O plano Hobby possui franquia de eventos; acompanhe o consumo em Usage. Consulte os limites atualizados em https://vercel.com/docs/analytics/limits-and-pricing .

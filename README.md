@@ -174,3 +174,4 @@ Abra https://vercel.com/francisco-diass-projects/nabocadopovo-eleicoes/analytics
 O componente React do pacote @vercel/analytics preserva a compatibilidade com Next.js e Vite/Vinext. A integração é desligada em builds fora da Vercel e não cria rotas de autenticação, banco de presença ou consultas adicionais à API eleitoral. Não há registro do conteúdo de CSV nem das atualizações do histórico local.
 
 O plano Hobby possui franquia de eventos; acompanhe o consumo em Usage. Consulte os limites atualizados em https://vercel.com/docs/analytics/limits-and-pricing .
+O destaque verde nos cargos 5, 6 e 7 segue a situação de eleição informada pelo TSE. Antes da finalização oficial, o cartão diz Na zona de eleição · provisório. O selo Eleito · TSE exige o indicador and=f do arquivo oficial; percentuais arredondados a 100% não bastam. Não há estimativa própria por ranking de votos nem cálculo paralelo de quocientes eleitorais.

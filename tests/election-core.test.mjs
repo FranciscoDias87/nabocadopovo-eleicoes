@@ -15,3 +15,4 @@ test('elected candidates precede higher-vote non-elected candidates',async()=>{
  assert.equal(rows.sort(compareCandidates)[0].name,'Líder');
  assert.deepEqual([{name:'Z',votes:null},{name:'B',votes:0},{name:'A',votes:0}].sort(compareCandidates).map(c=>c.name),['A','B','Z']);
 });
+test('final badge requires explicit finalization, not partial election status',async()=>{const {electionBadge}=await import('../lib/election-core.mjs');for(const office of ['5','6','7']){assert.equal(electionBadge(office,'Eleito por QP',false),'Na zona de eleição · provisório');assert.equal(electionBadge(office,'Eleito',undefined),'Na zona de eleição · provisório');assert.equal(electionBadge(office,'Eleito',true),'✓ Eleito · TSE');assert.equal(electionBadge(office,'Suplente',true),null);}assert.equal(electionBadge('1','Eleito',true),null);});

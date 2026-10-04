@@ -51,7 +51,7 @@ export default function Home(){
  <div className="counting"><div><span>Seções totalizadas</span><strong>{pct(result?.progress)}</strong></div><Progress value={result?.progress??0} aria-label="Percentual de seções totalizadas"/><p>{result?.total!=null?`${num(result.counted)} de ${num(result.total)} seções`:'Aguardando os dados oficiais de totalização.'}</p></div>
  <div className="latest-result"><strong>Última totalização do TSE: {result?.updated??'ainda não disponível'}</strong>{result?.generated&&<span>Arquivo gerado: {result.generated}</span>}{result?.stale&&<p role="status">Estes dados são anteriores à falha de atualização e podem estar desatualizados.</p>}{result?.source&&<a href={result.source} target="_blank" rel="noreferrer">Conferir arquivo oficial</a>}</div>
  <div className="result-actions"><button type="button" onClick={share}>Copiar link desta consulta</button><button type="button" disabled={result?.status!=='ok'} onClick={()=>result&&downloadCsv(result,{...context,csv:electionCsv})}>Baixar CSV completo</button></div><p className="share-message" role="status">{shareMessage}</p>
- <CandidateList result={result} loading={loading} selection={selection}/>
+ <CandidateList result={result} loading={loading} selection={selection} office={cargo}/>
  <details className="indicators-panel"><summary>Eleitorado e indicadores completos</summary><ElectionNumbers data={result?.indicators} place={place} office={cargo}/></details>
  <ElectionHistory result={result} context={context}/>
  </section>
@@ -59,3 +59,4 @@ export default function Home(){
  <footer><strong>NA BOCA DO POVO <span>· ELEIÇÕES 2026</span></strong><p>Dados e fotos: Tribunal Superior Eleitoral. Painel independente do programa Na Boca do Povo.</p><p>Resultados parciais podem mudar. A situação dos candidatos segue a informação do TSE.</p><a href="https://resultados.tse.jus.br/" target="_blank" rel="noreferrer">Conferir no TSE <ExternalLink size={14}/></a></footer>
  </main></>;
 }
+

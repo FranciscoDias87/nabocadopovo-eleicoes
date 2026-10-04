@@ -162,3 +162,4 @@ O navegador consulta a cada 30 segundos enquanto a página está visível. Na Ve
 Execute npm test e os dois builds antes de publicar. O GitHub Actions repete essas verificações e audita as dependências de produção. Next.js foi atualizado para 16.3.8, preservando Vite/Vinext.
 
 O endpoint /api/health verifica a disponibilidade da aplicação, sem afirmar que o TSE está disponível. Falhas de consulta geram o evento tse_fetch_failed nos logs do servidor. O modo transmissão não faz parte desta atualização.
+A lista prioriza candidatos com situação oficial Eleito, Eleito por QP ou Eleito por média (incluindo grafias femininas). Dentro dos grupos, mantém votos em ordem decrescente e desempate por nome. Suplentes, não eleitos e candidatos ao segundo turno não são classificados como eleitos. A ordem é recalculada em cada atualização; o painel não estima eleição a partir da quantidade de votos.

@@ -176,3 +176,9 @@ O componente React do pacote @vercel/analytics preserva a compatibilidade com Ne
 O plano Hobby possui franquia de eventos; acompanhe o consumo em Usage. Consulte os limites atualizados em https://vercel.com/docs/analytics/limits-and-pricing .
 O destaque verde nos cargos 5, 6 e 7 segue a situação de eleição informada pelo TSE. Antes da finalização oficial, o cartão diz Na zona de eleição · provisório. O selo Eleito · TSE exige o indicador and=f do arquivo oficial; percentuais arredondados a 100% não bastam. Não há estimativa própria por ranking de votos nem cálculo paralelo de quocientes eleitorais.
 Para presidente e governador, cartões verdes e selos Eleito · TSE ou Vai para o 2º turno · TSE exigem totalização finalizada e a situação oficial correspondente. O painel não deduz eleição ou segundo turno de percentuais nem da posição na lista.
+
+## Indicação matemática
+
+Para presidente (Brasil), governador e senador (UF), exclusivamente na consulta completa da disputa, o painel pode destacar Matematicamente eleito · cálculo do painel antes da finalização. O limite conservador considera todos os eleitores fora das seções apuradas como votos ainda possíveis. Para presidente/governador, exige votos do líder estritamente maiores que metade dos válidos atuais mais o limite restante. Para senador, usa as vagas oficiais nv, multiplica o limite restante pelas vagas (conservador) e exige vantagem estrita sobre o primeiro fora das vagas.
+
+A indicação é suspensa com dados ausentes/inconsistentes/desatualizados, destinação diferente de Válido, votos anulados ou sub judice, ou ausência de vagas oficiais. Empate possível não é vitória. Não se aplica a municípios, presidente em UF, deputados nem cálculo proporcional. Não é proclamação do TSE nem previsão probabilística, e pressupõe manutenção dos votos e condições jurídicas. A informação oficial final mantém prioridade.

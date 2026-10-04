@@ -1,4 +1,4 @@
-import {readNumber,compareCandidates} from '@/lib/election-core.mjs';
+import {readNumber,compareCandidates,mathematicalWinners} from '@/lib/election-core.mjs';
 import candidatePhotoIds from '@/lib/candidate-photo-ids.json';
 import {electionIndicators} from '@/lib/election-indicators';
 import {states} from '@/lib/geography';
@@ -61,9 +61,11 @@ export async function GET(request:Request){
  const url=`${root}/dados/${uf}/${uf}${town==='all'?'':town}-c${office.padStart(4,'0')}-e${pad}-u.json`,e=await file(url);if(!e.data)return unavailable(e);const d=e.data;
  if(String(d.ele)!==id||String(d.t)!==turn||!(d.carg??[]).some((c:Json)=>String(c.cd)===office))return reply({status:'error',message:'Arquivo de outra eleição ou cargo rejeitado.'});
  if(d.dv!=='s')return reply({status:'waiting',message:'O TSE ainda não liberou a divulgação desta abrangência.'});
- const candidates=(d.carg??[]).filter((c:Json)=>String(c.cd)===office).flatMap((c:Json)=>(c.agr??[]).flatMap((a:Json)=>(a.par??[]).flatMap((par:Json)=>(par.cand??[]).map((c:Json)=>({id:String(c.sqcand??''),photo:candidatePhoto(c.sqcand),name:String(c.nmu??c.nm),number:String(c.n),party:String(par.sg),votes:number(c.vap),percent:number(c.pvap),situation:String(c.st??'')}))))).sort(compareCandidates);
+ const mathematical=new Set(mathematicalWinners(d,office,uf,town,!!e.stale));
+ const candidates=(d.carg??[]).filter((c:Json)=>String(c.cd)===office).flatMap((c:Json)=>(c.agr??[]).flatMap((a:Json)=>(a.par??[]).flatMap((par:Json)=>(par.cand??[]).map((c:Json)=>({id:String(c.sqcand??''),mathematical:mathematical.has(String(c.sqcand)),photo:candidatePhoto(c.sqcand),name:String(c.nmu??c.nm),number:String(c.n),party:String(par.sg),votes:number(c.vap),percent:number(c.pvap),situation:String(c.st??'')}))))).sort(compareCandidates);
  return reply({status:'ok',finished:d.and==='f',message:d.and==='f'?'Totalização finalizada':d.and==='p'?'Apuração em andamento':'Apuração não iniciada',stale:!!e.stale,updated:d.dt && d.ht ? `${d.dt} ${d.ht}` : undefined,generated:`${d.dg} ${d.hg}`,source:url,progress:number(d.s?.pst),counted:number(d.s?.st),total:number(d.s?.ts),indicators:electionIndicators(d),valid:number(d.v?.vv),blank:number(d.v?.vb),nullVotes:number(d.v?.tvn),candidates});
 }
+
 
 
 

@@ -25,7 +25,7 @@ export default function Home(){
  const selection=`kind=result&uf=${uf}&office=${cargo}&town=${town}&turn=${turn}`;
  const {result,loading,checkedAt}=useElectionResult(selection,refresh,ready);
  const {result:summary}=useElectionResult(`kind=summary&turn=${turn}`,refresh,ready);
- const {result:townResult}=useElectionResult(`kind=towns&uf=${uf}&turn=${turn}`,refresh,ready&&uf!=='br',300000);
+ const {result:townResult}=useElectionResult(`kind=towns&uf=${uf}&turn=${turn}`,refresh,ready&&uf!=='br',150000);
  const towns=townResult?.towns??[];
  const chooseUf=(value:string)=>setFilters(f=>({...f,uf:value,town:'all',office:value==='br'?'1':f.office}));
  const title=office==='1'?'Presidente da República':office==='3'?'Governador':office==='5'?'Senador':office==='6'?'Deputado federal':uf==='df'?'Deputado distrital':'Deputado estadual';

@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useRef,useState} from 'react';
 import type {ElectionResult} from '@/lib/election-types';
-export function useElectionResult(params:string,tick:number,enabled=true,intervalMs=30000){
+export function useElectionResult(params:string,tick:number,enabled=true,intervalMs=15000){
  const [result,setResult]=useState<ElectionResult|null>(null);
  const [loading,setLoading]=useState(true);
  const [checkedAt,setCheckedAt]=useState<string|null>(null);
